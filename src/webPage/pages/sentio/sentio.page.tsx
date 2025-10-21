@@ -6,7 +6,8 @@ const SentioPage = () => {
             <Helmet>
                 <title>Sentio</title>
             </Helmet>
-            sentio
+
+            <h2>Sentio</h2>
         </div>
     );
 };
