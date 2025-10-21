@@ -1,0 +1,39 @@
+@import url('./btnColor.css');
+@import url('./fallbackSuspense.css');
+
+.bg-gradienteBlueRed {
+    background: rgb(2, 0, 36);
+    background: -moz-linear-gradient(
+        90deg,
+        rgba(2, 0, 36, 1) 0%,
+        rgba(64, 9, 121, 1) 35%,
+        rgba(255, 0, 0, 1) 100%
+    );
+    background: -webkit-linear-gradient(
+        90deg,
+        rgba(2, 0, 36, 1) 0%,
+        rgba(64, 9, 121, 1) 35%,
+        rgba(255, 0, 0, 1) 100%
+    );
+    background: linear-gradient(
+        90deg,
+        rgba(2, 0, 36, 1) 0%,
+        rgba(64, 9, 121, 1) 35%,
+        rgba(255, 0, 0, 1) 100%
+    );
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#020024",endColorstr="#ff0000",GradientType=1);
+}
+
+.textStroke {
+    line-height: 1;
+
+    -webkit-text-stroke-width: 0.3px;
+    -webkit-text-stroke-color: gray;
+}
+
+html[data-theme='dark'] {
+    .textStroke {
+        -webkit-text-stroke-width: 0.3px;
+        -webkit-text-stroke-color: white;
+    }
+}

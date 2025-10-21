@@ -1,0 +1,98 @@
+{
+    "compilerOptions": {
+        // "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+        // "target": "ES2022",
+        // "useDefineForClassFields": true,
+        // "lib": ["ES2022", "DOM", "DOM.Iterable"],
+        // "module": "ESNext",
+        // "skipLibCheck": true,
+
+        // /* Bundler mode */
+        // "moduleResolution": "bundler",
+        // "allowImportingTsExtensions": true,
+        // "verbatimModuleSyntax": true,
+        // "moduleDetection": "force",
+        // "noEmit": true,
+        // "jsx": "react-jsx",
+
+        // /* Linting */
+        // "strict": true,
+        // "noUnusedLocals": true,
+        // "noUnusedParameters": true,
+        // "erasableSyntaxOnly": true,
+        // "noFallthroughCasesInSwitch": true,
+        // "noUncheckedSideEffectImports": true,
+
+        "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+        "target": "ES2022",
+        "lib": ["ES2023", "DOM", "DOM.Iterable"],
+        "module": "ESNext",
+        "skipLibCheck": true,
+
+        /* Bundler mode */
+        "moduleResolution": "bundler",
+        "allowImportingTsExtensions": true,
+        "verbatimModuleSyntax": true,
+        "moduleDetection": "force",
+        "noEmit": true,
+        "jsx": "react-jsx",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+
+        /* Linting */
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedSideEffectImports": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "strictBindCallApply": true,
+        "forceConsistentCasingInFileNames": true,
+
+        /* Type Checking */
+        "allowJs": true,
+        "checkJs": true,
+        "types": ["vitest/globals", "@testing-library/jest-dom"],
+
+        /* Absolute imports */
+        "baseUrl": ".",
+        "paths": {
+            "@src/*": ["./src/*"],
+
+            /* - Curstom Agency Tool */
+            "@app/*": ["./src/customAgencyTool/app/*"],
+            "@assets/*": ["./src/customAgencyTool/assets/*"],
+            "@components/*": ["./src/customAgencyTool/components/*"],
+            "@context/*": ["./src/customAgencyTool/context/*"],
+            "@core/*": ["./src/customAgencyTool/core/*"],
+            "@features/*": ["./src/customAgencyTool/features/*"],
+            "@guard/*": ["./src/customAgencyTool/guard/*"],
+            "@layouts/*": ["./src/customAgencyTool/layouts/*"],
+            "@pages/*": ["./src/customAgencyTool/pages/*"],
+            "@styles/*": ["./src/customAgencyTool/styles/*"],
+            "@utils/*": ["./src/customAgencyTool/utils/*"],
+            "@ui/*": ["./src/customAgencyTool/components/ui/*"],
+
+            /* - webPage */
+            "@page/*": ["./src/webPage/*"],
+            "@pageAsset/*": ["./src/webPage/asset/*"],
+            "@pagePages/*": ["./src/webPage/page/*"],
+            "@pageComponents/*": ["./src/webPage/components/*"],
+            "@pageUtils/*": ["./src/webPage/utils/*"]
+        }
+    },
+    "include": [
+        "vite.config.ts",
+        "vitest.config.ts",
+        ".eslintrc.cjs",
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "src/**/*.js",
+        "src/**/*.jsx"
+    ],
+    "exclude": ["node_modules", "build", "dist", "coverage"]
+}

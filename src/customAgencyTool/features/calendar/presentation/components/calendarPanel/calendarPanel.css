@@ -1,0 +1,109 @@
+.calendar__OUtOfMonthRange {
+  background-color: #9ca3af;
+  color: white;
+  /* border-radius: 10px !important; */
+}
+
+html[data-theme='dark'] .calendar__OUtOfMonthRange {
+  background-color: #7e7e7e;
+  color: rgb(255, 255, 255);
+  /* border-radius: 10px !important; */
+}
+
+.calendar__ONofMonthRange {
+  background-color: #00aeff;
+  color: rgb(255, 255, 255);
+  /* border-radius: 10px !important; */
+  font-weight: bold;
+}
+
+html[data-theme='dark'] .calendar__ONofMonthRange {
+  background-color: rgb(95, 130, 189);
+  color: white;
+  /* border-radius: 10px !important; */
+}
+
+.calendar__DaySelected {
+  background-color: #0f8544;
+  color: rgb(255, 255, 255);
+  /* border-radius: 10px !important; */
+  font-weight: bold;
+}
+
+html[data-theme='dark'] .calendar__DaySelected {
+  background-color: #3c9e68;
+  color: white;
+  /* border-radius: 10px !important; */
+}
+
+.calendar__ISToday {
+  background-color: #2b6cb0;
+  color: rgb(255, 255, 255);
+  /* border-radius: 10px !important; */
+}
+
+html[data-theme='dark'] .calendar__ISToday {
+  background-color: #3c638b;
+  color: white;
+  /* border-radius: 10px !important; */
+}
+
+/*---------------------------*/
+/*        Calendar           */
+/*---------------------------*/
+.bg-blue-500 {
+  background-color: var(--chakra-colors-blue-500);
+}
+.bg-blue-100 {
+  background-color: var(--chakra-colors-blue-100);
+}
+.bg-blue-600 {
+  background-color: var(--chakra-colors-blue-600);
+}
+
+.text-white {
+  color: var(--chakra-colors-white);
+}
+.text-blue-600 {
+  color: var(--chakra-colors-blue-600);
+}
+.rounded-full {
+  border-radius: var(--chakra-radii-full);
+}
+.text-gray {
+  color: var(--chakra-colors-gray-500);
+}
+
+.fc-dayGridMonth-view .fc-view .fc-daygrid > table > tbody > tr > td {
+  border-color: #000 !important;
+}
+
+/*---------------------------*/
+/*        FullCalendar       */
+/*---------------------------*/
+
+.calendar-HedaerInWeek {
+  background-color: #eaf6f6;
+}
+
+html[data-theme='dark'] .calendar-HedaerInWeek {
+  background-color: #eaf6f654;
+}
+
+.calendar-HeaderOutWeek {
+  background-color: #66bfbf;
+}
+
+html[data-theme='dark'] .calendar-HeaderOutWeek {
+  background-color: #66bfbf54;
+}
+
+.weekend-color {
+  background-color: #e7eaf6;
+  color: gray;
+}
+
+html[data-theme='dark'] .weekend-color {
+  background-color: #2d3748;
+  color: white;
+}

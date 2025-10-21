@@ -1,0 +1,96 @@
+/*mobile*/
+@media (max-width: 699px) {
+
+    .titleInfo {
+        margin-top: 15%;
+        font-size: xx-large;
+        text-align: center;
+    }
+
+    .cardInfoDetails {
+        padding: 5%;
+        overflow: hidden;
+        max-width: 100%;
+    }
+
+    .cardInfo {
+        border-radius: 8px;
+        overflow: hidden;
+        max-width: 100%;
+    }
+
+    .cardInfo img {
+        margin-top: 5%;
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        flex: 1 1 auto;
+    }
+
+    .cardInfo-title {
+        font-size: 2vw;
+        margin-bottom: 1vw;
+    }
+
+    .cardInfo-content {
+        width: 60%;
+        width: 100%;
+    }
+
+    .cardInfo-text {
+        margin-top: 5%;
+        text-align: justify;
+        margin-bottom: 3%;
+        display: inline-block;
+        overflow-wrap: break-word;
+        font-weight: 500;
+        font-size: 15px;
+    }
+}
+
+/*desk*/
+@media (min-width: 700px) {
+
+    .titleInfo {
+        margin-top: 2%;
+        font-size: xxx-large;
+        text-align: center;
+    }
+
+    .cardInfoDetails {
+        padding: 5%;
+        overflow: hidden;
+        max-width: 100%;
+    }
+
+    .cardInfo {
+        margin-top: 5vh;
+        display: flex;
+        border-radius: 8px;
+        overflow: hidden;
+        max-width: 100%;
+    }
+
+    .cardInfo img {
+        width: 35%;
+        height: auto;
+        object-fit: cover;
+        flex: 1 1 auto;
+    }
+
+    .cardInfo-title {
+        font-size: 2vw;
+        margin-bottom: 1vw;
+    }
+
+    .cardInfo-content {
+        padding: 0 5% 0%;
+    }
+
+    .cardInfo-text {
+        text-align: start;
+        display: inline-block;
+        overflow-wrap: break-word;
+        font-weight: 500;
+    }
+}

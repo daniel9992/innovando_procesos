@@ -1,0 +1,266 @@
+@import 'katex/dist/katex.min.css';
+
+/* Table */
+.markdown-content {
+    max-width: 80vw;
+    overflow-x: auto;
+}
+.markdown-content table {
+    display: table;
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 1rem;
+    border-radius: '10px 10px 0px 0px';
+}
+
+.markdown-content table th,
+.markdown-content table td {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.markdown-content table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+    text-align: center;
+}
+html[data-theme='dark'] .markdown-content table th {
+    background-color: #272727;
+}
+
+.markdown-content table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+html[data-theme='dark'] .markdown-content table tr:nth-child(even) {
+    background-color: #272727;
+}
+
+.table-container {
+    position: relative;
+}
+
+.copy-button {
+    position: absolute;
+    top: 0px;
+    right: 0;
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+    opacity: 0;
+    z-index: 1;
+    background-color: #0604a3;
+    color: #fff;
+}
+
+.table-container:hover .copy-button {
+    opacity: 1;
+}
+
+.copy-button:hover {
+    background-color: #e0e0e0;
+}
+
+/* Typography */
+.markdown-content h1 {
+    font-size: 2.5rem;
+    margin: 2rem 0 1rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+.markdown-content h2 {
+    font-size: 2rem;
+    margin: 1.8rem 0 0.9rem;
+}
+
+.markdown-content h3 {
+    font-size: 1.5rem;
+    margin: 1.5rem 0 0.8rem;
+}
+
+.markdown-content h4 {
+    font-size: 1.25rem;
+    margin: 1.2rem 0 0.6rem;
+}
+
+.markdown-content p {
+    margin: 0 0 1rem;
+    line-height: 1.8;
+}
+
+.markdown-content .whitespace-pre-line {
+    white-space: pre-line;
+}
+
+/* Lists */
+.markdown-content ul,
+.markdown-content ol {
+    margin: 1rem 0;
+    padding-left: 2rem;
+}
+
+.markdown-content li {
+    margin: 0.5rem 0;
+    line-height: 1.6;
+}
+
+/* Links */
+.markdown-content a {
+    color: #0066cc;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.markdown-content a:hover {
+    color: #003d7a;
+    text-decoration: underline;
+}
+
+/* Blockquotes */
+.markdown-content blockquote {
+    margin: 1rem 0;
+    padding: 0.5rem 1rem;
+    border-left: 4px solid #ccc;
+    background-color: #f9f9f9;
+    font-style: italic;
+}
+[data-theme='dark'] .markdown-content blockquote {
+    background-color: #272727;
+}
+
+/* Code */
+.markdown-content code {
+    background-color: #f5f5f5;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+.markdown-content pre {
+    background-color: #f5f5f5;
+    padding: 1rem;
+    border-radius: 5px;
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+[data-theme='dark'] .markdown-content code,
+.markdown-content pre {
+    background-color: #272727;
+}
+
+/* Images */
+.markdown-content img {
+    max-width: 100%;
+    height: auto;
+    margin: 1rem 0;
+    border-radius: 5px;
+}
+
+/* Horizontal Rule */
+.markdown-content hr {
+    border: none;
+    border-top: 2px solid #eee;
+    margin: 2rem 0;
+}
+
+/* Definition Lists */
+.markdown-content dl {
+    margin: 1rem 0;
+}
+
+.markdown-content dt {
+    font-weight: bold;
+    margin-top: 1rem;
+}
+
+.markdown-content dd {
+    margin-left: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* Mark */
+.markdown-content mark {
+    background-color: #fff3cd;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+}
+
+/* Small */
+.markdown-content small {
+    font-size: 0.85em;
+    color: #666;
+}
+
+/* Emphasis */
+.markdown-content em {
+    font-style: italic;
+}
+
+.markdown-content strong {
+    font-weight: bold;
+}
+
+/* Subscript and Superscript */
+.markdown-content sub,
+.markdown-content sup {
+    font-size: 0.75em;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+
+.markdown-content sup {
+    top: -0.5em;
+}
+
+.markdown-content sub {
+    bottom: -0.25em;
+}
+
+/* Pre*/
+.markdown-content pre {
+    background-color: transparent;
+    border-radius: 10px;
+    font-size: 85%;
+    line-height: 1.45;
+    overflow: auto;
+    padding: 5px;
+}
+
+.markdown-content pre code {
+    background-color: transparent;
+    border: 0;
+    border-radius: 10px;
+    display: inline;
+    line-height: inherit;
+    margin: 0;
+    max-width: auto;
+    overflow: visible;
+    padding: 0;
+    word-wrap: normal;
+}
+
+.markdown-content .wrapper-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.markdown-content .wrapper-header p {
+    font-size: 0.8rem;
+    color: #696fc7;
+    font-weight: bold;
+    margin: auto 0px;
+}
+.markdown-content .wrapper-header button {
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: whitesmoke;
+    color: black;
+    cursor: pointer;
+}

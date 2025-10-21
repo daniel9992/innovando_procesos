@@ -1,0 +1,62 @@
+/* From Uiverse.io by mobinkakei */
+.loader {
+  width: 250px;
+  height: 250px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border-top: 5px solid #e74c3c;
+  position: relative;
+  animation: load 2s linear infinite;
+}
+
+.loader::before,
+.loader::after {
+  content: '';
+  width: 250px;
+  height: 250px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  border-radius: 50%;
+}
+
+.loader::before {
+  border-top: 5px solid #e67e22;
+  transform: rotate(120deg);
+}
+
+.loader::after {
+  border-top: 5px solid #3498db;
+  transform: rotate(240deg);
+}
+
+.loader span {
+  position: absolute;
+  font-size: small;
+  width: 250px;
+  height: 250px;
+  color: #0a0505;
+  text-align: center;
+  line-height: 250px;
+  animation: a2 2s linear infinite;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+[data-theme='dark'] .loader span {
+  color: #fff;
+}
+
+@keyframes load {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes a2 {
+  to {
+    transform: rotate(-360deg);
+  }
+}

@@ -1,0 +1,61 @@
+/* From Uiverse.io by Subaashbala */
+/* Prior to using this loader, please ensure that you have set a background image or background color, as the text is transparent and not designed with a solid color. */
+.loaderWithText {
+  --ANIMATION-DELAY-MULTIPLIER: 70ms;
+  padding: 5rem;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: rgba(240, 248, 255, 0.863);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+.loaderWithText span {
+  padding: 0;
+  margin: 0;
+  letter-spacing: -5rem;
+  animation-delay: 0s;
+  transform: translateY(4rem);
+  animation: hideAndSeek 1s alternate infinite
+    cubic-bezier(0.86, 0, 0.07, 1);
+}
+.loaderWithText .l {
+  animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 0);
+}
+.loaderWithText .o {
+  animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 1);
+}
+.loaderWithText .a {
+  animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 2);
+}
+.loaderWithText .d {
+  animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 3);
+}
+.loaderWithText .ispan {
+  animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 4);
+}
+.loaderWithText .n {
+  animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 5);
+}
+.loaderWithText .g {
+  animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 6);
+}
+.letter {
+  width: fit-content;
+  height: 3rem;
+}
+.i {
+  margin-inline: 5px;
+}
+@keyframes hideAndSeek {
+  0% {
+    transform: translateY(4rem);
+  }
+  100% {
+    transform: translateY(0rem);
+  }
+}

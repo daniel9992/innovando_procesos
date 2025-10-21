@@ -1,0 +1,119 @@
+.aboutTitle {
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.titleText {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.answerText {
+    margin-bottom: 20px;
+}
+
+.imgMision {
+    height: 30vh;
+}
+
+.TitleDiferent {
+    font-size: 2em;
+    text-align: center;
+}
+
+
+/*mobile*/
+@media (max-width: 699px) {
+    .containerAbout {
+        position: relative;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .textAbout {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        text-align: center;
+        font-size: 4vw;
+    }
+
+    .containerMision {
+        display: block;
+        justify-content: space-between;
+    }
+
+    .cardMision {
+        flex: 1;
+        margin: 10px;
+        padding: 20px;
+    }
+
+    .imgMision {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .textAboutTitle {
+        text-align: center;
+        padding: 5%;
+    }
+
+}
+
+/*desk*/
+@media (min-width: 700px) {
+    .containerAbout {
+        position: relative;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .textAbout {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        text-align: center;
+    }
+
+    .containerMision {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+        justify-content: space-between;
+        padding: 2%;
+
+    }
+
+    .cardMision {
+        flex: 1;
+        margin: 10px;
+        padding: 20px;
+    }
+
+    .imgMision {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .textAboutTitle {
+        font-size: 1.5em;
+        text-align: center;
+        padding: 5%;
+    }
+}

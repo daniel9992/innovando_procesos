@@ -1,0 +1,84 @@
+@import url('./loaderFile.css');
+@import url('./about.css');
+@import url('./blockQoutes.css');
+@import url('./btnColor.css');
+@import url('./home.css');
+@import url('./information.css');
+@import url('./main.css');
+
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* HomeSectionFeatures3 */
+.strongWhite > strong {
+    color: white !important;
+}
+
+.bgGradientBottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    z-index: -1;
+    /*
+    * Created with https://www.css-gradient.com
+    * Gradient link: https://www.css-gradient.com/?c1=fdfdfd&c2=000000&gt=l&gd=dtt
+    */
+    background: #ffffff27;
+    background: linear-gradient(180deg, #ffffff27, #00000049);
+}
+
+[data-theme='dark'] .bgGradientBottom {
+    /*
+    * Created with https://www.css-gradient.com
+    * Gradient link: https://www.css-gradient.com/?c1=fdfdfd&c2=000000&gt=l&gd=dtt
+    */
+    background: #14141449;
+    background: linear-gradient(180deg, #14141449, #00000049);
+}
+
+.text-gradient {
+    background: linear-gradient(to top, #0c298a, #0c9fb9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/*css del header*/
+.css-1kjdjjz {
+    height: 3rem !important;
+}
+
+.css-1enh60u {
+    height: 3rem !important;
+}
+
+.css-betff9 {
+    background: none !important;
+    border: 1px solid #0e0d0d !important;
+    color: #1a1a1a !important;
+}
+
+.css-betff9:hover {
+    border-image: linear-gradient(to right, red, blue) 5 !important;
+    text-align: center;
+
+    background: linear-gradient(to right, #120edb, #f00d0d) !important;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
+
+.css-70qvj9 {
+    gap: 5% !important;
+    cursor: pointer;
+}
