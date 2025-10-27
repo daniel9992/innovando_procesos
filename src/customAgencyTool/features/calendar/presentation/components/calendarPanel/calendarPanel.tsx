@@ -11,7 +11,14 @@ import interactionPlugin, {
 import listPlugin from '@fullcalendar/list';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { MyButton, MyFlex } from '@src/customAgencyTool/components/ui';
+import {
+    MyButton,
+    MyDrawer,
+    MyFlex,
+    MyHeading,
+    MyInputText,
+    MyText,
+} from '@src/customAgencyTool/components/ui';
 import {
     DateConverter,
     TIME_ZONES,
@@ -25,6 +32,7 @@ import utc from 'dayjs/plugin/utc';
 import moment from 'moment-timezone';
 import { useCallback, useEffect, useRef, useState, type FC } from 'react';
 import type { InterfaceCalendarEvent } from '../../../domain/calendarEvent.entity';
+import { birthdays } from '../../../domain/birthdays';
 import { CostaRicanatioNalHolidays } from '../../../domain/CostaRicaNalHolidays';
 import { adapterEvents } from '../../utils/adapterEvents';
 import './calendarPanel.css';
@@ -92,6 +100,12 @@ export const CalendarPanel1: FC<InterfaceCalendarPanelProps> = () => {
                     hour12: true,
                     meridiem: 'short'
                 }}
+
+                dayCellDidMount={(arg) => {
+                    if (highlightedDays.includes(arg.date.getDay())) {
+                        arg.el.style.backgroundColor = highlightedColor;
+                    }
+                }}
             />
         </>
     );
@@ -115,6 +129,29 @@ const CalendarPanel: FC<InterfaceCalendarPanelProps> = ({
 
     // Variable para controlar el tiempo entre clicks
     let clickTimeout: NodeJS.Timeout | null = null;
+
+    const [highlightedDays, setHighlightedDays] = useState<number[]>([]);
+    const [highlightedColor, setHighlightedColor] = useState<string>('#f0f0f0');
+
+    const [birthdayEvents, setBirthdayEvents] = useState<any[]>([]);
+
+    useEffect(() => {
+        const currentYear = new Date().getFullYear();
+        const events = birthdays.flatMap(birthday => {
+            const birthDate = new Date(birthday.date);
+            return Array.from({ length: 11 }, (_, i) => {
+                const year = currentYear + i;
+                return {
+                    title: `Birthday: ${birthday.title}`,
+                    start: `${year}-${String(birthDate.getMonth() + 1).padStart(2, '0')}-${String(birthDate.getDate()).padStart(2, '0')}`,
+                    allDay: true,
+                    display: 'background',
+                    color: '#FFD700'
+                };
+            });
+        });
+        setBirthdayEvents(events);
+    }, []);
 
     /**
      *  ? ----------------------------------
@@ -334,14 +371,14 @@ const CalendarPanel: FC<InterfaceCalendarPanelProps> = ({
      *  *  handled TimeZone
      *  ? ----------------------------------
      */
-    // const handledOnShowTimeZone = () => {
-    //     setShowModal((prev) => {
-    //         return {
-    //             ...prev,
-    //             timeZone: !prev.timeZone
-    //         };
-    //     });
-    // };
+    const handledOnShowTimeZone = () => {
+        setShowModal((prev) => {
+            return {
+                ...prev,
+                timeZone: !prev.timeZone
+            };
+        });
+    };
     /**
      *  ? -----------------------------
      *  *  Render
@@ -415,9 +452,15 @@ const CalendarPanel: FC<InterfaceCalendarPanelProps> = ({
                         Lista
                     </MyButton>
 
-                    {/* <MyButton onClick={handledOnShowTimeZone}>
+                    <MyButton onClick={handledOnShowTimeZone}>
                         {timeZone}
-                    </MyButton> */}
+                    </MyButton>
+
+                    <MyButton
+                        aria-label="Settings"
+                        icon={'SETTINGS'}
+                        onClick={() => setShowModal(prev => ({ ...prev, settings: true }))}
+                    />
                 </MyFlex>
             </MyFlex>
 
@@ -451,7 +494,8 @@ const CalendarPanel: FC<InterfaceCalendarPanelProps> = ({
                     //     end: new Date(Date.now() + 3600000).toISOString()
                     // }
                     ...CostaRicanatioNalHolidays,
-                    ...adapterEvents(events, timeZone)
+                    ...adapterEvents(events, timeZone),
+                    ...birthdayEvents
                 ]}
                 // Manejador de click en evento
                 eventClick={(info) => {
@@ -510,11 +554,72 @@ const CalendarPanel: FC<InterfaceCalendarPanelProps> = ({
                 timeZone={timeZone}
                 onChangeTimeZone={setTimeZone}
             />
+
+            <SettingsDrawer
+                isOpen={showModal.settings}
+                onClose={() => setShowModal(prev => ({ ...prev, settings: false }))}
+                highlightedDays={highlightedDays}
+                setHighlightedDays={setHighlightedDays}
+                highlightedColor={highlightedColor}
+                setHighlightedColor={setHighlightedColor}
+            />
         </MyFlex>
     );
 };
 
 export default CalendarPanel;
+
+const SettingsDrawer: FC<{
+    isOpen: boolean;
+    onClose: () => void;
+    highlightedDays: number[];
+    setHighlightedDays: (days: number[]) => void;
+    highlightedColor: string;
+    setHighlightedColor: (color: string) => void;
+}> = ({
+    isOpen,
+    onClose,
+    highlightedDays,
+    setHighlightedDays,
+    highlightedColor,
+    setHighlightedColor
+}) => {
+    const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+
+    const handleDayToggle = (day: number) => {
+        setHighlightedDays(
+            highlightedDays.includes(day)
+                ? highlightedDays.filter(d => d !== day)
+                : [...highlightedDays, day]
+        );
+    };
+
+    return (
+        <MyDrawer isOpen={isOpen} onOpenChange={onClose} header="Settings" placement="end">
+            <MyFlex direction="column" p={4}>
+                <MyHeading size="md" mb={2}>Highlight Weekdays</MyHeading>
+                <MyFlex direction="row" wrap="wrap" gap={2}>
+                    {days.map((day, index) => (
+                        <MyButton
+                            key={day}
+                            onClick={() => handleDayToggle(index)}
+                            variant={highlightedDays.includes(index) ? 'solid' : 'outline'}
+                        >
+                            {day}
+                        </MyButton>
+                    ))}
+                </MyFlex>
+
+                <MyHeading size="md" mt={4} mb={2}>Highlight Color</MyHeading>
+                <MyInputText
+                    type="color"
+                    value={highlightedColor}
+                    onChange={e => setHighlightedColor(e.target.value)}
+                />
+            </MyFlex>
+        </MyDrawer>
+    );
+};
 
 // 4. Componente React de ejemplo
 export const TimeZoneConverter: React.FC = () => {
