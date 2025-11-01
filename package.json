@@ -51,6 +51,7 @@
         "firebase-tools": "^14.8.0",
         "fix": "^0.0.6",
         "formik": "^2.4.6",
+        "framer-motion": "^12.23.24",
         "fullcalendar": "^6.1.17",
         "highlight.js": "^11.11.1",
         "html-react-parser": "^5.2.6",

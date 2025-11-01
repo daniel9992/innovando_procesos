@@ -15,7 +15,7 @@ const ShowMyQuestion: FC<ShowMyQuestionProps> = ({ question }) => {
         >
             <MyFlex
                 direction={'column'}
-                px={2}
+                p={3}
                 width={isExpanded ? '100%' : '50%'}
                 boxShadow={'md'}
                 position={'relative'}

@@ -1,15 +1,14 @@
-
 import { MyButton, MyFlex, MyText } from '@src/customAgencyTool/components/ui';
-import {
+import type {
     ICustomChatConversation,
     ICustomChatSession
 } from '@src/customAgencyTool/features/iAChat/domain/customChat.model';
 import { motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
+import ShowResponseMarkDown from '../../components/showResponseMarkDown/showResponseMarkDown';
+import ShorFileParts from './shorFileParts';
 import ShowActiveSession from './showActiveSession';
 import ShowMyQuestion from './showMyQuestion';
-import ShowResponseMarkDown from './components/showResponseMarkDown/showResponseMarkDown';
-import ShorFileParts from './shorFileParts';
 
 interface ConversationViewProps {
     conversations: ICustomChatConversation[];
@@ -54,6 +53,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 md: '85vw',
                 lg: '75vw'
             }}
+            width={'100%'}
             mx={'auto'}
         >
             <ShowActiveSession activeSession={activeSession} />
@@ -66,74 +66,60 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3 }}
                     >
-                        <MyFlex
-                            direction={'column'}
-                            gap={2}
-                            px={3}
-                        >
+                        <MyFlex direction={'column'} gap={2} px={3}>
                             <MyFlex
                                 direction={'row'}
-                            justify={'space-between'}
-                            align={'center'}
-                            p={0}
-                        >
-                            <MyFlex p={0}></MyFlex>
-                            <MyFlex
-                                direction={'row'}
-                                gap={2}
+                                justify={'space-between'}
                                 align={'center'}
+                                p={0}
                             >
-                                {conv.isReplyConversation && (
-                                    <MyText
-                                        fontSize={'0.8rem'}
-                                        color={'gray'}
-                                    >
-                                        Respuesta Reintentada.
-                                    </MyText>
-                                )}
-                                <MyButton
-                                    aria-label={
-                                        'Reintentar conversación'
-                                    }
-                                    variant={'plain'}
-                                    colorPalette={'blue'}
-                                    icon={'REFRESH'}
-                                    size={'xs'}
-                                    onClick={() => {
-                                        handledRetryConversation(
-                                            conv
-                                        );
-                                    }}
-                                />
-                                <MyButton
-                                    aria-label={
-                                        'Eliminar conversación'
-                                    }
-                                    variant={'plain'}
-                                    colorPalette={'red'}
-                                    icon={'TRASH'}
-                                    size={'xs'}
-                                    onClick={() => {
-                                        hanledDeleteConversation(
-                                            conv
-                                        );
-                                    }}
-                                />
+                                <MyFlex p={0}></MyFlex>
+                                <MyFlex
+                                    direction={'row'}
+                                    gap={2}
+                                    align={'center'}
+                                >
+                                    {conv.isReplyConversation && (
+                                        <MyText
+                                            fontSize={'0.8rem'}
+                                            color={'gray'}
+                                        >
+                                            Respuesta Reintentada.
+                                        </MyText>
+                                    )}
+                                    <MyButton
+                                        aria-label={'Reintentar conversación'}
+                                        variant={'plain'}
+                                        colorPalette={'blue'}
+                                        icon={'REFRESH'}
+                                        size={'xs'}
+                                        onClick={() => {
+                                            handledRetryConversation(conv);
+                                        }}
+                                    />
+                                    <MyButton
+                                        aria-label={'Eliminar conversación'}
+                                        variant={'plain'}
+                                        colorPalette={'red'}
+                                        icon={'TRASH'}
+                                        size={'xs'}
+                                        onClick={() => {
+                                            hanledDeleteConversation(conv);
+                                        }}
+                                    />
+                                </MyFlex>
                             </MyFlex>
-                        </MyFlex>
 
-                        <ShorFileParts
-                            inlineParts={conv.inlineParts}
-                            filesParts={conv.fileDataParts}
-                            isLoading={isLoadingFilePart}
-                            onSelectFile={handledOnselectFilePart}
-                        />
+                            <ShorFileParts
+                                inlineParts={conv.inlineParts}
+                                filesParts={conv.fileDataParts}
+                                isLoading={isLoadingFilePart}
+                                onSelectFile={handledOnselectFilePart}
+                            />
 
-                        <ShowMyQuestion question={conv.question} />
+                            <ShowMyQuestion question={conv.question} />
 
-                        <ShowResponseMarkDown
-                            response={conv.response}
-                        />
+                            <ShowResponseMarkDown response={conv.response} />
                         </MyFlex>
                     </motion.div>
                 ))}

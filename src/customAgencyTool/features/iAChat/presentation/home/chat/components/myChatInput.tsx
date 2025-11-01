@@ -10,7 +10,8 @@ import {
 } from '@src/customAgencyTool/components/ui';
 import { useNotificationAdapter } from '@src/customAgencyTool/context/toastAppNotification/useNotificationAdapter';
 import type { IPrompt } from '@src/customAgencyTool/features/iAChat/domain/chatConfig.model';
-import ShowAttachedDocs from '@src/customAgencyTool/features/orderTraking/components/manageAttachedDocs/fragments/showAttachedDocs';
+
+import ShowAttachedDocs from '@src/customAgencyTool/components/showAttachedDocs/showAttachedDocs';
 import { GetToday } from '@src/customAgencyTool/utils/dayManagment/dayjsUtils';
 import { GetRamdom } from '@src/customAgencyTool/utils/stringUtils/getRamdom';
 import type { FileDataPart, InlineDataPart } from 'firebase/ai';

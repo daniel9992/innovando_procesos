@@ -15,14 +15,12 @@ import type {
     ICustomChatSession
 } from '../../domain/customChat.model';
 import { ChatService } from '../../infrastructure/chatDataService/00chatService';
+import ConversationView from './chat/components/ConversationView';
 import DialogShowFileParts from './chat/components/dialogShowFileParts';
 import DialogToRename from './chat/components/dialogToRename';
 import MyChatInput, { type IMyChat } from './chat/components/myChatInput';
 import SessionGroups from './chat/components/sessionGroups';
-import ConversationView from './chat/components/ConversationView';
 import ShowEmptyConversations from './chat/components/showEmptyConversations';
-import ShowMyQuestion from './chat/components/showMyQuestion';
-import ShowResponseMarkDown from './components/showResponseMarkDown/showResponseMarkDown';
 
 interface ManageSelectedFilePart {
     showDialog: boolean;
@@ -305,7 +303,8 @@ const Home = () => {
     return (
         <div
             style={{
-                margin: 'auto'
+                margin: 'auto',
+                overflow: 'hidden'
             }}
         >
             <MyFlex
@@ -316,52 +315,37 @@ const Home = () => {
                 // }}
                 w={'92vw'}
                 h={'95vh'}
-                // bg={'gray'}
+                //bg={'gray'}
                 justifyContent={'space-between'}
                 p={0}
             >
                 {/* Columna de Sesiones */}
-                <MyFlex
-                    flex={{
-                        base: '',
-                        md: 1,
-                        lg: 1
+
+                <SessionGroups
+                    isEnableSessions={isLoading}
+                    activeSessionId={activeSessionId}
+                    sessions={sessions}
+                    isLoadingSessions={sessionsLoading}
+                    hasMoreSessions={sessionsHasMore}
+                    onSelectSession={(session) => {
+                        // Lógica para seleccionar una sesión
+                        handleSelectSession(session.id);
                     }}
-                    direction={'column'}
-                    // h={'100%'}
-                    justifyContent={'flex-start'}
-                    px={3}
-                    bg={'bg.muted'}
-                >
-                    <SessionGroups
-                        isEnableSessions={isLoading}
-                        activeSessionId={activeSessionId}
-                        sessions={sessions}
-                        isLoadingSessions={sessionsLoading}
-                        hasMoreSessions={sessionsHasMore}
-                        onSelectSession={(session) => {
-                            // Lógica para seleccionar una sesión
-                            handleSelectSession(session.id);
-                        }}
-                        onMenuSession={(session, action) => {
-                            // Lógica para manejar los menús de una sesión
-                            if (action === 'rename') {
-                                handledOnRenameSession(
-                                    session.id,
-                                    session.title
-                                );
-                            }
-                            if (action === 'delete') {
-                                hanledDeleteSession(session);
-                            }
-                        }}
-                        loadMoreSessions={() => {
-                            // Lógica para cargar más sesiones
-                            loadMoreSessions();
-                        }}
-                        onNewSession={handleNewSession}
-                    />
-                </MyFlex>
+                    onMenuSession={(session, action) => {
+                        // Lógica para manejar los menús de una sesión
+                        if (action === 'rename') {
+                            handledOnRenameSession(session.id, session.title);
+                        }
+                        if (action === 'delete') {
+                            hanledDeleteSession(session);
+                        }
+                    }}
+                    loadMoreSessions={() => {
+                        // Lógica para cargar más sesiones
+                        loadMoreSessions();
+                    }}
+                    onNewSession={handleNewSession}
+                />
 
                 {/* Ventana de Chat Principal */}
                 <MyFlex

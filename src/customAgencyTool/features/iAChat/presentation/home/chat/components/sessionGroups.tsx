@@ -1,15 +1,15 @@
-import { Box, useBreakpointValue } from '@chakra-ui/react';
-import LoadingWithText from '@src/customAgencyTool/components/loading/loadingWithText';
-import { AnimatePresence, motion } from 'framer-motion';
+import { useBreakpointValue } from '@chakra-ui/react';
 import {
     MyButton,
     MyDialog,
     MyFlex,
     MyHeading,
     MyMenu,
-    MyText
+    MyText,
+    MyTooltip
 } from '@src/customAgencyTool/components/ui';
 import { SelectedIcons } from '@src/customAgencyTool/utils/iconSelected/setIcon';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useMemo, useState, type FC, type ReactNode } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList, type ListChildComponentProps } from 'react-window';
@@ -156,11 +156,14 @@ const SessionGroups: FC<SessionGroupsProps> = ({
     loadMoreSessions,
     onNewSession
 }) => {
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    const handleMouseEnter = () => setIsHovered(true);
-    const handleMouseLeave = () => setIsHovered(false);
+    const showContent = isExpanded || isHovered;
+
+    const handleMouseEnter = useCallback(() => setIsHovered(true), []);
+    const handleMouseLeave = useCallback(() => setIsHovered(false), []);
 
     const wrapperBreakpoint = useBreakpointValue({
         base: true,
@@ -223,6 +226,7 @@ const SessionGroups: FC<SessionGroupsProps> = ({
                             onClick={() => setIsDialogOpen(true)}
                         />
                     </MyFlex>
+
                     <MyDialog
                         isOpen={isDialogOpen}
                         onClose={() => setIsDialogOpen(false)}
@@ -253,8 +257,6 @@ const SessionGroups: FC<SessionGroupsProps> = ({
                 position={'relative'}
                 opacity={isLoadingSessions ? 0.5 : 1}
                 minHeight={'350px'}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
             >
                 {children}
             </MyFlex>
@@ -290,70 +292,171 @@ const SessionGroups: FC<SessionGroupsProps> = ({
     }
 
     return (
-        <SessionWrap>
-            <AnimatePresence>
-                {isHovered && (
-                    <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        style={{ overflow: 'hidden' }}
-                    >
-                        <MyFlex justifyContent={'center'} align={'center'}>
-                            <MyButton
-                                leftIcon={'ADD'}
-                                onClick={onNewSession}
-                                width={'100%'}
-                                colorPalette={'submit'}
-                                disabled={isEnableSessions}
-                            >
-                                Crea una sesión nueva
-                            </MyButton>
-                        </MyFlex>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-
-            {isLoadingSessions && (
+        <MyFlex
+            //
+            // p={3}
+            direction={'column'}
+            bg={'bg.muted'}
+            height={'100%'}
+        >
+            <MyFlex
+                //
+                direction={'column'}
+                px={2}
+                justify={'flex-start'}
+                gap={4}
+            >
+                <div>
+                    <MyTooltip content={'Ancla la columna de menú'}>
+                        <MyButton
+                            icon={isExpanded ? 'Pin' : 'MENU'}
+                            size={'xs'}
+                            variant={isExpanded ? 'outline' : 'plain'}
+                            borderColor={isExpanded ? '#e7eaf675' : ''}
+                            borderRadius={'full'}
+                            onClick={() => setIsExpanded((prev) => !prev)}
+                        />
+                    </MyTooltip>
+                </div>
                 <MyFlex
-                    position={'absolute'}
-                    top={0}
-                    left={0}
-                    bottom={0}
-                    right={0}
-                    justifyContent={'center'}
+                    direction={'row'}
+                    justify={'flex-start'}
                     align={'center'}
-                    p={4}
-                    bg={'bg.muted'}
+                    p={0}
+                    display={showContent ? 'none' : 'flex'}
                 >
-                    <LoadingWithText text={'Cargando...'} />
-                </MyFlex>
-            )}
-            <AutoSizer>
-                {({ height, width }) => (
-                    <InfiniteLoader
-                        isItemLoaded={isItemLoaded}
-                        itemCount={hasMoreSessions ? itemCount + 1 : itemCount}
-                        loadMoreItems={loadMoreSessions}
+                    <MyTooltip
+                        content={'Crea una sesión para empezar a chatear'}
                     >
-                        {({ onItemsRendered, ref }) => (
-                            <FixedSizeList
-                                height={height}
-                                width={width}
-                                itemCount={itemCount}
-                                itemSize={ITEM_HEIGHT}
-                                itemData={itemData}
-                                onItemsRendered={onItemsRendered}
-                                ref={ref}
+                        <MyButton
+                            size={'xs'}
+                            variant={'plain'}
+                            icon={'Pencil'}
+                            onClick={onNewSession}
+                            disabled={isEnableSessions}
+                        />
+                    </MyTooltip>
+                </MyFlex>
+            </MyFlex>
+
+            <motion.div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    // padding: 12,
+                    paddingLeft: 12,
+                    paddingRight: 12,
+                    // backgroundColor: bgColor, // bg={'bg.muted'}
+                    height: '100%', // Para que la expansión vertical tenga un punto de referencia
+                    borderRadius: '10px'
+                }}
+                // Animación de flex (ancho) del contenedor principal
+                animate={{ flex: showContent ? 1 : 'none' }} // Usamos 'none' o un valor específico para el colapsado
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+            >
+                {/* 2. AnimatePresence para animar la entrada/salida de los hijos */}
+                <AnimatePresence>
+                    {showContent && ( // Solo renderiza el MyFlex de contenido si showContent es true
+                        <motion.div
+                            key="content-panel" // Importante: darle una key única a AnimatePresence para que sepa qué animar
+                            initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                            animate={{
+                                opacity: 1,
+                                height: 'auto',
+                                marginTop: 8
+                            }} // mt={2} = 8px
+                            exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                            transition={{ duration: 0.3, ease: 'easeInOut' }}
+                            // Puedes usar MyFlex aquí si quieres conservar sus props, pero envuelto
+                            // o MyFlex es un motion.div
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'flex-start',
+                                alignItems: 'stretch',
+                                overflow: 'hidden' // Importante para que height: 0 funcione bien
+                            }}
+                        >
+                            {/* 3. Animación individual para cada hijo (si son múltiples) */}
+                            {/* Si `children` es un array, itera sobre ellos */}
+                            <motion.div
+                                key={`child-1`} // Cada hijo necesita una key única
+                                initial={{ opacity: 0, y: -20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{
+                                    duration: 0.2,
+                                    delay: 1 * 0.05
+                                }} // Escalona la aparición
                             >
-                                {SessionItem}
-                            </FixedSizeList>
-                        )}
-                    </InfiniteLoader>
-                )}
-            </AutoSizer>
-        </SessionWrap>
+                                <MyFlex
+                                    justifyContent={'center'}
+                                    align={'center'}
+                                >
+                                    <MyButton
+                                        leftIcon={'Pencil'}
+                                        onClick={onNewSession}
+                                        colorPalette={'submit'}
+                                        disabled={isEnableSessions}
+                                    >
+                                        Crea una sesión nueva
+                                    </MyButton>
+                                </MyFlex>
+                            </motion.div>
+
+                            <MyFlex direction={'column'} p={0} height={'90vh'}>
+                                <AutoSizer>
+                                    {({ height, width }) => (
+                                        <InfiniteLoader
+                                            isItemLoaded={isItemLoaded}
+                                            itemCount={
+                                                hasMoreSessions
+                                                    ? itemCount + 1
+                                                    : itemCount
+                                            }
+                                            loadMoreItems={loadMoreSessions}
+                                        >
+                                            {({ onItemsRendered, ref }) => (
+                                                <FixedSizeList
+                                                    height={height}
+                                                    width={width}
+                                                    itemCount={itemCount}
+                                                    itemSize={ITEM_HEIGHT}
+                                                    itemData={itemData}
+                                                    onItemsRendered={
+                                                        onItemsRendered
+                                                    }
+                                                    ref={ref}
+                                                >
+                                                    {SessionItem}
+                                                </FixedSizeList>
+                                            )}
+                                        </InfiniteLoader>
+                                    )}
+                                </AutoSizer>
+                            </MyFlex>
+
+                            {/* {React.Children.map(children, (child, index) => (
+                            <motion.div
+                                key={`child-${index}`} // Cada hijo necesita una key única
+                                initial={{ opacity: 0, y: -20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{
+                                    duration: 0.2,
+                                    delay: index * 0.05
+                                }} // Escalona la aparición
+                            >
+                                {child}
+                            </motion.div>
+                        ))} */}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </motion.div>
+        </MyFlex>
     );
 };
 

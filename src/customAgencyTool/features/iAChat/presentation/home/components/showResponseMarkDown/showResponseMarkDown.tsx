@@ -10,8 +10,9 @@ import DOMPurify from 'dompurify';
 import { type FC, type ReactNode, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import prism from 'react-syntax-highlighter/dist/esm/styles/prism/prism';
+import vs from 'react-syntax-highlighter/dist/esm/styles/prism/vs';
+import vsDarkPlus from 'react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus';
+
 import rehypeKatex from 'rehype-katex';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
@@ -114,14 +115,24 @@ export const CodeBlock: FC<CodeBlockProps> = ({
     //     return <MermaidChart code={children as string} />;
     // }
 
+    // return (
+    // <MyCodeBlock
+    //     title={language}
+    //     language={language}
+    //     code={children as string}
+    // />
+    // );
+
     return (
         <>
             <CodeHeader language={language} divKey={divKey} />
             <SyntaxHighlighter
-                style={colorMode === 'dark' ? dark : prism}
+                style={colorMode === 'dark' ? vsDarkPlus : vs}
                 language={language}
                 PreTag="div"
                 id={divKey}
+                showLineNumbers={true}
+                wrapLines={true}
             >
                 {String(children).replace(/\n$/, '')}
             </SyntaxHighlighter>

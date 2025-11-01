@@ -17,12 +17,13 @@ const ShowActiveSession = ({ activeSession }: IProps) => {
             justifyContent={'space-between'}
             align={'center'}
             p={0}
+            px={4}
         >
             <MyText fontWeight={'semibold'}>{activeSession.title}</MyText>
             <MyText color={'gray'} fontSize={'0.8rem'}>
                 {ShowDate(
                     activeSession.createdAt,
-                    'D [-] MMMM [-] YYYY hh:mm:ss',
+                    'D [-] MMMM [-] YYYY hh:mm:ss A',
                     'es'
                 )}
             </MyText>
