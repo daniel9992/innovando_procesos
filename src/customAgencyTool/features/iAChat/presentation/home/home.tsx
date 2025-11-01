@@ -19,8 +19,7 @@ import DialogShowFileParts from './chat/components/dialogShowFileParts';
 import DialogToRename from './chat/components/dialogToRename';
 import MyChatInput, { type IMyChat } from './chat/components/myChatInput';
 import SessionGroups from './chat/components/sessionGroups';
-import ShorFileParts from './chat/components/shorFileParts';
-import ShowActiveSession from './chat/components/showActiveSession';
+import ConversationView from './chat/components/ConversationView';
 import ShowEmptyConversations from './chat/components/showEmptyConversations';
 import ShowMyQuestion from './chat/components/showMyQuestion';
 import ShowResponseMarkDown from './components/showResponseMarkDown/showResponseMarkDown';
@@ -375,98 +374,15 @@ const Home = () => {
                         enableToShow={conversations.length === 0}
                     />
 
-                    <MyFlex
-                        direction={'column'}
-                        p={0}
-                        justifyContent={'flex-start'}
-                        display={conversations.length === 0 ? 'none' : 'flex'}
-                        overflow={'auto'}
-                        maxWidth={{
-                            base: '100%',
-                            md: '85vw',
-                            lg: '75vw'
-                        }}
-                        mx={'auto'}
-                    >
-                        <ShowActiveSession activeSession={activeSession} />
-
-                        <MyFlex direction={'column'} gap={2} px={3}>
-                            {conversations.map((conv) => (
-                                <MyFlex
-                                    key={conv.id}
-                                    direction={'column'}
-                                    gap={2}
-                                    px={3}
-                                >
-                                    <MyFlex
-                                        direction={'row'}
-                                        justify={'space-between'}
-                                        align={'center'}
-                                        p={0}
-                                    >
-                                        <MyFlex p={0}></MyFlex>
-                                        <MyFlex
-                                            direction={'row'}
-                                            gap={2}
-                                            align={'center'}
-                                        >
-                                            {conv.isReplyConversation && (
-                                                <MyText
-                                                    fontSize={'0.8rem'}
-                                                    color={'gray'}
-                                                >
-                                                    Respuesta Reintentada.
-                                                </MyText>
-                                            )}
-                                            <MyButton
-                                                aria-label={
-                                                    'Reintentar conversación'
-                                                }
-                                                variant={'plain'}
-                                                colorPalette={'blue'}
-                                                icon={'REFRESH'}
-                                                size={'xs'}
-                                                onClick={() => {
-                                                    handledRetryConversation(
-                                                        conv
-                                                    );
-                                                }}
-                                            />
-                                            <MyButton
-                                                aria-label={
-                                                    'Eliminar conversación'
-                                                }
-                                                variant={'plain'}
-                                                colorPalette={'red'}
-                                                icon={'TRASH'}
-                                                size={'xs'}
-                                                onClick={() => {
-                                                    hanledDeleteConversation(
-                                                        conv
-                                                    );
-                                                }}
-                                            />
-                                        </MyFlex>
-                                    </MyFlex>
-
-                                    <ShorFileParts
-                                        inlineParts={conv.inlineParts}
-                                        filesParts={conv.fileDataParts}
-                                        isLoading={isLoadingFilePart}
-                                        onSelectFile={handledOnselectFilePart}
-                                    />
-
-                                    <ShowMyQuestion question={conv.question} />
-
-                                    <ShowResponseMarkDown
-                                        response={conv.response}
-                                    />
-                                </MyFlex>
-                            ))}
-                            {/* Load more trigger */}
-                            <div ref={loadMoreRef} className="h-10" />
-                        </MyFlex>
-                    </MyFlex>
+                    <ConversationView
+                        conversations={conversations}
+                        activeSession={activeSession}
+                        isLoadingFilePart={isLoadingFilePart}
+                        loadMoreRef={loadMoreRef}
+                        handledRetryConversation={handledRetryConversation}
+                        hanledDeleteConversation={hanledDeleteConversation}
+                        handledOnselectFilePart={handledOnselectFilePart}
+                    />
 
                     <MyFlex direction={'column'} gap={2} p={0}>
                         {conversationsLoading && (

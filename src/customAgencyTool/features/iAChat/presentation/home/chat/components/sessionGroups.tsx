@@ -1,5 +1,6 @@
-import { useBreakpointValue } from '@chakra-ui/react';
+import { Box, useBreakpointValue } from '@chakra-ui/react';
 import LoadingWithText from '@src/customAgencyTool/components/loading/loadingWithText';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
     MyButton,
     MyDialog,
@@ -156,6 +157,10 @@ const SessionGroups: FC<SessionGroupsProps> = ({
     onNewSession
 }) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
+
+    const handleMouseEnter = () => setIsHovered(true);
+    const handleMouseLeave = () => setIsHovered(false);
 
     const wrapperBreakpoint = useBreakpointValue({
         base: true,
@@ -248,6 +253,8 @@ const SessionGroups: FC<SessionGroupsProps> = ({
                 position={'relative'}
                 opacity={isLoadingSessions ? 0.5 : 1}
                 minHeight={'350px'}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
             >
                 {children}
             </MyFlex>
@@ -284,17 +291,29 @@ const SessionGroups: FC<SessionGroupsProps> = ({
 
     return (
         <SessionWrap>
-            <MyFlex justifyContent={'center'} align={'center'}>
-                <MyButton
-                    leftIcon={'ADD'}
-                    onClick={onNewSession}
-                    width={'100%'}
-                    colorPalette={'submit'}
-                    disabled={isEnableSessions}
-                >
-                    Crea una sesión nueva
-                </MyButton>
-            </MyFlex>
+            <AnimatePresence>
+                {isHovered && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        style={{ overflow: 'hidden' }}
+                    >
+                        <MyFlex justifyContent={'center'} align={'center'}>
+                            <MyButton
+                                leftIcon={'ADD'}
+                                onClick={onNewSession}
+                                width={'100%'}
+                                colorPalette={'submit'}
+                                disabled={isEnableSessions}
+                            >
+                                Crea una sesión nueva
+                            </MyButton>
+                        </MyFlex>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {isLoadingSessions && (
                 <MyFlex
