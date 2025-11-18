@@ -4,6 +4,7 @@ import { MyFlex } from '../components/ui';
 import type { MenuItemButon } from '../components/ui/myMenu';
 import { AsideMenuAgenda } from '../features/agenda/presentation/routeAgenda';
 import { AsideMenuDashboard } from '../features/dashboard/presentation/routeDashboard';
+import { AsideMenuNotifications } from '../features/notifications/presentation/routeNotifications';
 import { AsideMenuIAChat } from '../features/iAChat/presentation/routeIAChat';
 import { AsideMenuSettings } from '../features/settings/presentation/routeSettings';
 import { AsideMenuUserAdmin } from '../features/userAdmin/presentation/routeUserAdmin';
@@ -13,6 +14,7 @@ const AppLayout = () => {
     const asideMenuItems: MenuItemButon[] = [
         AsideMenuDashboard,
         AsideMenuAgenda,
+        AsideMenuNotifications,
         AsideMenuIAChat,
         AsideMenuUserAdmin,
         AsideMenuUserManagement
