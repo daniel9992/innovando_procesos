@@ -15,6 +15,7 @@ import {
     ColorModeButton,
     useColorMode
 } from '@src/customAgencyTool/components/ui/color-mode';
+import { NotificationIcon } from '@src/customAgencyTool/features/notifications/presentation/NotificationIcon';
 import { SelectedIcons } from '@src/customAgencyTool/utils/iconSelected/setIcon';
 import { PageRoutes } from '@src/webPage/routes/routeManagementWebPage';
 import { AnimatePresence, motion } from 'motion/react';
@@ -23,6 +24,7 @@ import { useTranslation } from 'react-i18next';
 import { FaLanguage } from 'react-icons/fa';
 import { IoIosArrowDown } from 'react-icons/io';
 import { useNavigate } from 'react-router';
+import { PrivateRoutePath } from '@src/customAgencyTool/pages/private/privateRoutes';
 import ComboboxDynamic, {
     type IComboboxDynItem
 } from '../comboboxDynamic/comboboxDynamic';
@@ -192,9 +194,14 @@ const MobileNavView: FC<MobileNavItemProps> = ({
                     >
                         <Text fontWeight={'medium'}>Menu</Text>
 
-                        <Button variant={'ghost'}>
-                            <SelectedIcons iconName="MENU" />
-                        </Button>
+                        <Flex align="center">
+                            <Box onClick={() => navigate('/notifications')} cursor="pointer" mr={2}>
+                                <NotificationIcon />
+                            </Box>
+                            <Button variant={'ghost'}>
+                                <SelectedIcons iconName="MENU" />
+                            </Button>
+                        </Flex>
                     </Flex>
                 }
                 footer={
@@ -349,7 +356,10 @@ const DeskTopView: FC<DeskTopViewProps> = ({
                                 </Button>
                             )}
                         </Flex>
-                        <Flex gap={4}>
+                        <Flex gap={4} alignItems="center">
+                            <Box onClick={() => navigate(PrivateRoutePath.NOTIFICATIONS_PAGE)} cursor="pointer">
+                                <NotificationIcon />
+                            </Box>
                             <ColorModeButton />
 
                             <Button
