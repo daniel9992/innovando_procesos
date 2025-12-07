@@ -52,21 +52,4 @@ describe('Notifications', () => {
       expect(compositionRoot.markNotificationAsRead.execute).toHaveBeenCalledWith('1');
     });
   });
-
-  it('handles creating a new notification', async () => {
-    render(
-      <ChakraProvider>
-        <HelmetProvider>
-          <Notifications />
-        </HelmetProvider>
-      </ChakraProvider>
-    );
-
-    const createButton = screen.getByText('Create Notification');
-    fireEvent.click(createButton);
-
-    await waitFor(() => {
-      expect(compositionRoot.createNotification.execute).toHaveBeenCalled();
-    });
-  });
 });

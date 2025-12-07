@@ -15,33 +15,9 @@ export const Notifications: React.FC = () => {
     await markNotificationAsRead.execute(uid);
   };
 
-  const handleCreateNotification = async () => {
-    const newNotification = {
-      title: 'New Notification',
-      message: 'This is a test notification.',
-      sender: {
-        uid: '1',
-        name: 'Sender',
-        email: 'sender@example.com',
-      },
-      receiver: [
-        {
-          uid: '2',
-          name: 'Receiver',
-          email: 'receiver@example.com',
-        },
-      ],
-      url: '/notifications',
-      urlName: 'View',
-      searchTerms: ['test', 'notification'],
-    };
-    await createNotification.execute(newNotification);
-  };
-
   return (
     <div>
       <h1>Notifications</h1>
-      <button onClick={handleCreateNotification}>Create Notification</button>
       <ul>
         {notifications.map(notification => (
           <li key={notification.uid} style={{ textDecoration: notification.isRead ? 'line-through' : 'none' }}>

@@ -7,15 +7,15 @@ import {
     useState,
     type ChangeEvent,
     type FC,
-    type KeyboardEvent
+    type KeyboardEvent,
+    type FocusEvent
 } from 'react';
-import { MyBox, MyInputNumber, MyInputText } from '../../ui';
+import { MyBox, MyInputText } from '../../ui';
 import { RenderErrorMessage } from '../utils/renderErrorMessage';
 
 interface CustomInputProps {
     label?: string;
     icon?: string;
-    type?: 'text' | 'number';
     textAlign?: 'left' | 'center' | 'right';
     typeError?: 'top' | 'bottom';
     suggestedValue?: number;
@@ -31,156 +31,114 @@ export const FormikInputNumber: FC<CustomInputProps & FieldProps> = ({
     callBackOnChange = () => {},
     isDisabled = false,
     typeError = 'top',
-    type = 'number',
     field,
     form,
     ...props
 }) => {
-    const isError = form.touched[field.name] && form.errors[field.name];
-
-    // const startInitialValue = useMemo(() => {
-    //     if (!field.value) {
-    //         return '0';
-    //     }
-    //     return field.value.toString();
-    // }, [field.value]);
-
-    // const [inputValue, setInputValue] = useState<string>(startInitialValue);
-
+    const isError = form.touched[field.name] && !!form.errors[field.name];
     const [inputValue, setInputValue] = useState<string>('');
 
     useEffect(() => {
-        if (field.value) {
-            setInputValue(field.value.toString());
+        const value = field.value;
+        if (value !== undefined && value !== null) {
+            setInputValue(value.toString());
         } else {
             setInputValue('0');
         }
-        // setInputValue(field.value.toString());
     }, [field.value]);
 
     useEffect(() => {
-        if (suggestedValue) {
+        if (suggestedValue !== undefined) {
             setInputValue(suggestedValue.toString());
-
-            //
             form.setFieldValue(field.name, suggestedValue);
         }
-    }, [suggestedValue]);
+    }, [suggestedValue, field.name, form]);
 
-    const handleOnChange = useCallback(
-        (event: ChangeEvent<HTMLInputElement>) => {
-            const value = event.target.value.replace(',', '.'); // Normalize comma to dot for consistency
-
+    const handleOnChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+        let value = event.target.value;
+        value = value.replace(',', '.');
+        if (/^-?\d*\.?\d*$/.test(value)) {
             setInputValue(value);
-            // Regex to validate a decimal number  or integer
-            const decimalNumberRegex = /^-?\d*\.?\d*$/;
+        }
+    }, []);
 
-            if (decimalNumberRegex.test(value)) {
-                const newValue =
-                    value === '' || value === '-' || value === '.'
-                        ? ''
-                        : parseFloat(value);
-
-                if (!isNaN(newValue as number)) {
-                    form.setFieldValue(
-                        field.name,
-                        newValue === '' ? 0 : newValue
-                    );
-
-                    callBackOnChange(newValue as number);
-                } else {
-                    form.setFieldValue(field.name, 0);
-                }
+    const handleOnBlur = useCallback(
+        (event: FocusEvent<HTMLInputElement>) => {
+            let value = event.target.value;
+            if (value.endsWith('.')) {
+                value = value.slice(0, -1);
             }
+
+            const parsedValue =
+                value === '' || value === '-' ? 0 : parseFloat(value);
+            const finalValue = isNaN(parsedValue) ? 0 : parsedValue;
+
+            form.setFieldValue(field.name, finalValue);
+            callBackOnChange(finalValue);
+            setInputValue(finalValue.toString());
+            form.handleBlur(event);
         },
         [form, field.name, callBackOnChange]
     );
 
-    const handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
-        // Ejemplos de formato de número que se acepta y se convierte a decimal
-        // 455,000,123.87 -> 455000123.87
-        // 455, 000,123.87 -> 455000123.87
-        // 455 , 000 , 123 . 87 -> 455000123.87
-        // 455 000 123.87 -> 455000123.87
-        // 235035,55 -> 235035.55
+    const handlePaste = useCallback(
+        (event: React.ClipboardEvent<HTMLInputElement>) => {
+            const pastedText = event.clipboardData.getData('text');
+            const normalizedPastedText = pastedText
+                .replace(/\s+/g, '')
+                .replace(/(\d+),(?=\d{3}(?:[.,]|$))/g, '$1')
+                .replace(',', '.');
 
-        // Get the pasted text from the clipboard
-        const pastedText = event.clipboardData.getData('text');
-
-        const normalizedPastedText = pastedText
-            .replace(/\s+/g, '') // Remove all spaces
-            .replace(/(\d+),(?=\d{3}(?:[.,]|$))/g, '$1') // Remove commas used as thousand separators
-            .replace(',', '.'); // Convert comma used as decimal separator to a period
-
-        const parsedNumber = parseFloat(normalizedPastedText);
-
-        if (!isNaN(parsedNumber)) {
-            setInputValue(`${parsedNumber}`);
+            const parsedNumber = parseFloat(normalizedPastedText);
+            if (!isNaN(parsedNumber)) {
+                setInputValue(parsedNumber.toString());
+                form.setFieldValue(field.name, parsedNumber);
+                callBackOnChange(parsedNumber);
+            }
             event.preventDefault();
-            form.setFieldValue(field.name, parsedNumber);
-            callBackOnChange(parsedNumber as number);
-        }
-    };
+        },
+        [form, field.name, callBackOnChange]
+    );
 
-    const handleOnValueChange = (returnChage: unknown) => {
-        const { value, valueAsNumber } = returnChage as {
-            value: string;
-            valueAsNumber: number;
-        };
+    const onKeyDownJustNumbers = useCallback(
+        (event: KeyboardEvent<HTMLInputElement>) => {
+            const { key, currentTarget } = event;
+            const { value } = currentTarget;
 
-        if (valueAsNumber !== undefined) {
-            form.setFieldValue(field.name, valueAsNumber);
-            callBackOnChange(valueAsNumber);
-        }
+            if (
+                [
+                    'Backspace',
+                    'Delete',
+                    'Tab',
+                    'Escape',
+                    'Enter',
+                    'ArrowLeft',
+                    'ArrowRight',
+                    'Home',
+                    'End'
+                ].includes(key) ||
+                (key === 'a' && (event.metaKey || event.ctrlKey)) ||
+                (key === 'c' && (event.metaKey || event.ctrlKey)) ||
+                (key === 'v' && (event.metaKey || event.ctrlKey)) ||
+                (key === 'x' && (event.metaKey || event.ctrlKey))
+            ) {
+                return;
+            }
 
-        if (value !== undefined) {
-            setInputValue(value);
-        }
-    };
+            if (key === '.' && !value.includes('.')) {
+                return;
+            }
 
-    /**
-     * Un manejador de evento onKeyDown que solo permite la entrada de números y un único punto decimal.
-     * También permite teclas de control y navegación para una mejor usabilidad.
-     *
-     * @param event El evento de teclado de React.
-     */
-    const onKeyDownJustNumbers = (event: KeyboardEvent<HTMLInputElement>) => {
-        const { key, currentTarget } = event;
-        const { value } = currentTarget;
+            if (key === '-' && value.length === 0) {
+                return;
+            }
 
-        // 1. Permite teclas de control y navegación esenciales
-        // (Backspace, Delete, Tab, Escape, Enter, flechas, etc.)
-        // También permite modificadores como Ctrl/Cmd para acciones como copiar/pegar/seleccionar todo.
-        if (
-            [
-                'Backspace',
-                'Delete',
-                'Tab',
-                'Escape',
-                'Enter',
-                'ArrowLeft',
-                'ArrowRight',
-                'Home',
-                'End'
-            ].includes(key) ||
-            event.metaKey || // Cmd en Mac
-            event.ctrlKey // Ctrl en Windows
-        ) {
-            return; // No hagas nada, deja que la tecla funcione.
-        }
-
-        // 2. Maneja el caso del punto decimal para permitir solo uno.
-        if (key === '.' && !value.includes('.')) {
-            return; // Permite el primer punto.
-        }
-
-        // 3. Comprueba si la tecla presionada NO es un número.
-        const isNumber = /^[0-9]$/.test(key);
-        if (!isNumber) {
-            // 4. Si no es una de las teclas permitidas ni un número, previene la acción.
-            event.preventDefault();
-        }
-    };
+            if (!/^[0-9]$/.test(key)) {
+                event.preventDefault();
+            }
+        },
+        []
+    );
 
     const renderLabel = () => (
         <ChakraField.Label css={floatingStyles} truncate>
@@ -192,35 +150,7 @@ export const FormikInputNumber: FC<CustomInputProps & FieldProps> = ({
     return (
         <ChakraField.Root gap={1} {...props}>
             <MyBox pos="relative" w="full" p={0} m={0}>
-                {type === 'number' ? (
-                    <MyInputNumber
-                        id={field.name}
-                        data-testid={field.name}
-                        key={'key-input-' + field.name}
-                        border={isError ? '1px solid #921313' : ''}
-                        value={inputValue}
-                        isDisabled={isDisabled}
-                        textAlign={textAlign}
-                        onChange={handleOnChange}
-                        onPaste={handlePaste}
-                        onValueChange={handleOnValueChange}
-                    />
-                ) : (
-                    <MyInputText
-                        id={field.name}
-                        data-testid={field.name}
-                        key={'key-input-' + field.name}
-                        border={isError ? '1px solid #921313' : ''}
-                        value={inputValue}
-                        isDisabled={isDisabled}
-                        textAlign={textAlign}
-                        onChange={handleOnChange}
-                        onPaste={handlePaste}
-                        onChangeCapture={handleOnValueChange}
-                        onKeyDown={onKeyDownJustNumbers}
-                    />
-                )}
-                {/* <MyInputNumber
+                <MyInputText
                     id={field.name}
                     data-testid={field.name}
                     key={'key-input-' + field.name}
@@ -229,15 +159,16 @@ export const FormikInputNumber: FC<CustomInputProps & FieldProps> = ({
                     isDisabled={isDisabled}
                     textAlign={textAlign}
                     onChange={handleOnChange}
+                    onBlur={handleOnBlur}
                     onPaste={handlePaste}
-                    onValueChange={handleOnValueChange}
-                /> */}
+                    onKeyDown={onKeyDownJustNumbers}
+                />
                 {renderLabel()}
             </MyBox>
             <RenderErrorMessage
                 name={field.name}
                 position={typeError}
-                isError={isError ? true : false}
+                isError={isError}
                 errorMessage={form.errors[field.name] as string}
             />
         </ChakraField.Root>
@@ -246,7 +177,6 @@ export const FormikInputNumber: FC<CustomInputProps & FieldProps> = ({
 
 const floatingStyles = defineStyle({
     pos: 'absolute',
-    // bg: 'bg',
     bg: 'bg.muted',
     px: '0.5rem',
     borderRadius: '5px',

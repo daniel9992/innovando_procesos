@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaBell } from 'react-icons/fa';
 import { notificationService } from '../infrastructure/composition-root';
+import { Box, Text } from '@chakra-ui/react';
 
 export const NotificationIcon: React.FC = () => {
   const [unreadCount, setUnreadCount] = useState(notificationService.getUnreadCount());
@@ -11,22 +12,24 @@ export const NotificationIcon: React.FC = () => {
   }, []);
 
   return (
-    <div style={{ position: 'relative', cursor: 'pointer' }}>
+    <Box position="relative" cursor="pointer">
       <FaBell size={24} />
       {unreadCount > 0 && (
-        <span style={{
-          position: 'absolute',
-          top: -5,
-          right: -5,
-          backgroundColor: 'red',
-          color: 'white',
-          borderRadius: '50%',
-          padding: '2px 6px',
-          fontSize: '12px',
-        }}>
+        <Text
+          as="span"
+          position="absolute"
+          top="-5px"
+          right="-5px"
+          bg="red"
+          color="white"
+          borderRadius="50%"
+          px="6px"
+          py="2px"
+          fontSize="12px"
+        >
           {unreadCount}
-        </span>
+        </Text>
       )}
-    </div>
+    </Box>
   );
 };
