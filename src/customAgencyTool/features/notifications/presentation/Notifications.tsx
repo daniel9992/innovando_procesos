@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { markNotificationAsRead, notificationService } from '../infrastructure/composition-root';
 import { Notification } from '../domain/notifications';
-import { createNotification } from '../infrastructure/composition-root';
 
 export const Notifications: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);

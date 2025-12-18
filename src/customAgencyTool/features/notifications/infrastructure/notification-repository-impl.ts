@@ -21,19 +21,27 @@ export class NotificationRepositoryImpl implements NotificationRepository {
 
   async findAll(): Promise<Notification[]> {
     const querySnapshot = await getDocs(this.notificationsCollection);
-    return querySnapshot.docs.map(doc => ({
-      uid: doc.id,
-      ...doc.data(),
-    } as Notification));
+    return querySnapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        uid: doc.id,
+        ...data,
+        date: data.date.toDate(),
+      } as Notification;
+    });
   }
 
   async findUnread(): Promise<Notification[]> {
     const q = query(this.notificationsCollection, where('isRead', '==', false));
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
-      uid: doc.id,
-      ...doc.data(),
-    } as Notification));
+    return querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          uid: doc.id,
+          ...data,
+          date: data.date.toDate(),
+        } as Notification;
+    });
   }
 
   async markAsRead(uid: string): Promise<void> {

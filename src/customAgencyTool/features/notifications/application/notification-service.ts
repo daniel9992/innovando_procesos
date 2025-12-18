@@ -22,10 +22,14 @@ export class NotificationService {
 
     const allQuery = collection(db, 'notifications');
     this.unsubscribeFromAll = onSnapshot(allQuery, (snapshot) => {
-      this.notifications = snapshot.docs.map(doc => ({
-        uid: doc.id,
-        ...doc.data(),
-      } as Notification));
+      this.notifications = snapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          uid: doc.id,
+          ...data,
+          date: data.date.toDate(),
+        } as Notification;
+      });
       this.notifyNotifications();
     });
   }
