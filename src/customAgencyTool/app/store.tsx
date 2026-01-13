@@ -11,6 +11,7 @@ import { authSlice } from '../features/auth/infrastructure/authSlice';
 import { calendarSlice } from '../features/calendar/infrastructure/calendarSlice';
 import { crudsSlice } from '../features/crud/crudSlice';
 import { iaChatSlice } from '../features/iAChat/infrastructure/chat.reducer';
+import { notificationsSlice } from '../features/notifications/infrastructure/notificationsSlice';
 import { settingSlice } from '../features/settings/infrastructure/settingSlice';
 import { userAdminSlice } from '../features/userAdmin/infrastructure/userAdminSlice';
 
@@ -26,7 +27,8 @@ const reducer = {
     userAdmin: userAdminSlice.reducer,
     agenda: agendaSlice.reducer,
     setting: settingSlice.reducer,
-    iaChat: iaChatSlice.reducer
+    iaChat: iaChatSlice.reducer,
+    notifications: notificationsSlice.reducer
 };
 
 export const rootReducer = combineReducers(reducer);

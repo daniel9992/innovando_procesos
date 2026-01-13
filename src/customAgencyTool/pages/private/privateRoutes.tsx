@@ -26,6 +26,10 @@ import {
     ManagementUserManagementRoute,
     UserManagementRoutPath
 } from '@src/customAgencyTool/features/userManagement/presentation/routeUserManagement';
+import {
+    ManagementNotificationsRoute,
+    NotificationsRoutPath
+} from '@src/customAgencyTool/features/notifications/presentation/routeNotifications';
 import { ProtectedRoute } from '@src/customAgencyTool/guard/protectedRoute';
 import { lazy } from 'react';
 import type { RouteObject } from 'react-router';
@@ -39,7 +43,8 @@ export const PrivateRoutePath = {
     ...SettingsRoutPath,
     ...UserAdminRoutPath,
     ...UserManagementRoutPath,
-    ...IAChatRootRoutPath
+    ...IAChatRootRoutPath,
+    ...NotificationsRoutPath
 };
 
 export const ManagementPrivateRoute: RouteObject[] = [
@@ -54,7 +59,8 @@ export const ManagementPrivateRoute: RouteObject[] = [
             ...ManagementUserManagementRoute,
             ...ManagementUserAdminRoute,
             ...ManagementSettingsRoute,
-            ...ManagementIAChatRoute
+            ...ManagementIAChatRoute,
+            ...ManagementNotificationsRoute
         ]
     }
 ];
