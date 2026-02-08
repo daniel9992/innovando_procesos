@@ -11,7 +11,11 @@ interface InputCustomProps {
     endAddon?: ReactNode;
 }
 
-export interface InputProps extends ChakraInputProps, InputCustomProps {}
+export interface InputProps
+    extends Omit<ChakraInputProps, 'value'>,
+        InputCustomProps {
+    value?: string | number;
+}
 
 export const MyInputText = forwardRef<HTMLInputElement, InputProps>(
     function Input(props, ref) {
